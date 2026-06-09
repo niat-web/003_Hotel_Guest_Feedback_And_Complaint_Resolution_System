@@ -13,41 +13,46 @@ import {
 function WeeklyReport({ report }) {
   if (!report) {
     return (
-      <div className="page-card">
+      <div className="dashboard-card">
         <h1>Weekly Satisfaction Report</h1>
-        <p>No report data available</p>
+        <p>No report data available.</p>
       </div>
     );
   }
 
+  const departmentData = report.complaintByDepartment || [];
+  const ratingData = report.ratingDistribution || [];
+
+  const colors = ["#2563eb", "#16a34a", "#facc15", "#f97316", "#dc2626"];
+
   return (
-    <div className="page-card">
+    <div className="dashboard-card">
       <h1>Weekly Satisfaction Report</h1>
 
-      <div className="report-grid">
+      <div className="report-summary">
         <div className="stat-card">
           <h3>Total Feedback</h3>
-          <p>{report.totalFeedback}</p>
+          <p>{report.totalFeedback || 0}</p>
         </div>
 
         <div className="stat-card">
           <h3>Total Complaints</h3>
-          <p>{report.totalComplaints}</p>
+          <p>{report.totalComplaints || 0}</p>
         </div>
 
         <div className="stat-card">
           <h3>Resolved Complaints</h3>
-          <p>{report.resolvedComplaints}</p>
+          <p>{report.resolvedComplaints || 0}</p>
         </div>
 
         <div className="stat-card">
           <h3>Escalated Complaints</h3>
-          <p>{report.escalatedComplaints}</p>
+          <p>{report.escalatedComplaints || 0}</p>
         </div>
 
         <div className="stat-card">
           <h3>Average Rating</h3>
-          <p>{report.averageRating} / 5</p>
+          <p>{report.averageRating || 0} / 5</p>
         </div>
       </div>
 
@@ -55,10 +60,10 @@ function WeeklyReport({ report }) {
         <div className="chart-card">
           <h3>Complaint Count by Department</h3>
 
-          <ResponsiveContainer width="100%" height={250}>
-            <BarChart data={report.complaintByDepartment}>
+          <ResponsiveContainer width="100%" height={260}>
+            <BarChart data={departmentData}>
               <XAxis dataKey="department" />
-              <YAxis />
+              <YAxis allowDecimals={false} />
               <Tooltip />
               <Bar dataKey="count" fill="#2563eb" />
             </BarChart>
@@ -68,17 +73,22 @@ function WeeklyReport({ report }) {
         <div className="chart-card">
           <h3>Rating Distribution</h3>
 
-          <ResponsiveContainer width="100%" height={250}>
+          <ResponsiveContainer width="100%" height={260}>
             <PieChart>
               <Pie
-                data={report.ratingDistribution}
+                data={ratingData}
                 dataKey="count"
                 nameKey="rating"
+                cx="50%"
+                cy="50%"
                 outerRadius={90}
                 label
               >
-                {report.ratingDistribution.map((entry, index) => (
-                  <Cell key={index} fill={["#2563eb", "#16a34a", "#facc15", "#f97316", "#dc2626"][index]} />
+                {ratingData.map((entry, index) => (
+                  <Cell
+                    key={`cell-${index}`}
+                    fill={colors[index % colors.length]}
+                  />
                 ))}
               </Pie>
               <Tooltip />

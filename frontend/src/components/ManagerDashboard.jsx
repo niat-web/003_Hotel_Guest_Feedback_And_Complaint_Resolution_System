@@ -121,8 +121,8 @@ function ManagerDashboard() {
             </button>
 
             <button className="logout-btn" onClick={logout}>
-              Logout
-            </button>
+  <span>Logout</span>
+</button>
           </div>
         </div>
 

@@ -27,6 +27,7 @@ async function getAllComplaints(req, res) {
         resolution_notes AS resolutionNotes,
         created_at AS createdAt
       FROM complaints
+      WHERE status != 'Resolved'
       ORDER BY id DESC`
     );
 
