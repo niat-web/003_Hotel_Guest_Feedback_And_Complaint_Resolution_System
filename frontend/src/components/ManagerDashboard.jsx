@@ -38,22 +38,22 @@ function ManagerDashboard() {
     }
   };
 
- useEffect(() => {
-  const isLoggedIn = localStorage.getItem("managerLoggedIn");
+  useEffect(() => {
+    const isLoggedIn = localStorage.getItem("managerLoggedIn");
 
-  if (isLoggedIn !== "true") {
-    navigate("/manager/login");
-    return;
-  }
+    if (isLoggedIn !== "true") {
+      navigate("/manager/login");
+      return;
+    }
 
-  refreshData();
-
-  const intervalId = setInterval(() => {
     refreshData();
-  }, 3000);
 
-  return () => clearInterval(intervalId);
-}, []);
+    const intervalId = setInterval(() => {
+      refreshData();
+    }, 3000);
+
+    return () => clearInterval(intervalId);
+  }, []);
 
   const logout = () => {
     localStorage.removeItem("managerLoggedIn");
@@ -121,32 +121,34 @@ function ManagerDashboard() {
             </button>
 
             <button className="logout-btn" onClick={logout}>
-  <span>Logout</span>
-</button>
+              <span>Logout</span>
+            </button>
           </div>
         </div>
 
-        <div className="manager-summary">
-          <div className="stat-card">
-            <h3>Total Feedback</h3>
-            <p>{report?.totalFeedback || 0}</p>
-          </div>
+        {activePage !== "reports" && (
+          <div className="manager-summary">
+            <div className="stat-card">
+              <h3>Total Feedback</h3>
+              <p>{report?.totalFeedback || 0}</p>
+            </div>
 
-          <div className="stat-card">
-            <h3>Total Complaints</h3>
-            <p>{report?.totalComplaints || 0}</p>
-          </div>
+            <div className="stat-card">
+              <h3>Total Complaints</h3>
+              <p>{report?.totalComplaints || 0}</p>
+            </div>
 
-          <div className="stat-card">
-            <h3>Resolved</h3>
-            <p>{report?.resolvedComplaints || 0}</p>
-          </div>
+            <div className="stat-card">
+              <h3>Resolved</h3>
+              <p>{report?.resolvedComplaints || 0}</p>
+            </div>
 
-          <div className="stat-card">
-            <h3>Escalated</h3>
-            <p>{report?.escalatedComplaints || 0}</p>
+            <div className="stat-card">
+              <h3>Escalated</h3>
+              <p>{report?.escalatedComplaints || 0}</p>
+            </div>
           </div>
-        </div>
+        )}
 
         {renderPage()}
       </main>
